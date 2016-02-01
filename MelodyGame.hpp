@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GLSLProgram.hpp"
 #include "Sprite.hpp"
 #include <SDL2/SDL.h>
 #undef main
@@ -17,6 +18,7 @@ public:
 	
 private:
 	void initSystems();
+	void initShaders();
 	void gameLoop();
 	void processInput();
 	void drawGame();
@@ -26,4 +28,5 @@ private:
 	int _screenHeight = 600;
 	GameState _gameState = GameState::PLAY;
 	Sprite _sprite;
+	GLSLProgram _colorProgram;
 };

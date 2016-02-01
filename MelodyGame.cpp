@@ -1,15 +1,7 @@
 #include "MelodyGame.hpp"
 #include <iostream>
 #include <string>
-
-void fatalError(std::string errorString)
-{
-	std::cout << errorString << std::endl;
-	std::cout << "Enter any key to quit...";
-	std::cin.get();
-	SDL_Quit();
-	exit(1);
-}
+#include "Errors.hpp"
 
 MelodyGame::MelodyGame()
 {
@@ -19,7 +11,7 @@ MelodyGame::MelodyGame()
 
 MelodyGame::~MelodyGame()
 {
-	
+	SDL_Quit();
 }
 
 void MelodyGame::run()
@@ -59,6 +51,15 @@ void MelodyGame::initSystems()
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	
 	glClearColor(0.45f,0.6f,1.0f,1.0f);
+	
+	initShaders();
+}
+
+void MelodyGame::initShaders()
+{
+	_colorProgram.compileShaders("Shaders/vertexShading.vert", "Shaders/fragShading.frag");
+	_colorProgram.addAttribute("vertexPosition");
+	_colorProgram.linkShaders();
 }
 
 void MelodyGame::gameLoop()
@@ -92,7 +93,11 @@ void MelodyGame::drawGame()
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
+	_colorProgram.use();
+	
 	_sprite.draw();
+	
+	_colorProgram.unuse();
 	
 	SDL_GL_SwapWindow(_window);
 }
