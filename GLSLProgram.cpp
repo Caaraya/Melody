@@ -38,7 +38,7 @@ void GLSLProgram::compileShaders(const std::string& vertexShaderFilePath, const 
 
 void GLSLProgram::linkShaders()
 {
-	_programID = glCreateProgram();
+	
 	
 	glAttachShader(_programID, _vertexShaderID);
 	glAttachShader(_programID, _fragmentShaderID);
@@ -77,6 +77,17 @@ void GLSLProgram::addAttribute(const std::string& attributeName)
 	glBindAttribLocation(_programID, _numAttributes++, attributeName.c_str());
 }
 
+GLint GLSLProgram::getUniformLocation(const std::string& uniformName)
+{
+	GLint location = glGetUniformLocation(_programID, uniformName.c_str());
+	if(location == GL_INVALID_INDEX) 
+	{
+		fatalError("Uniform " + uniformName + "Not found in shader");
+	}
+	
+	return location;
+}
+
 void GLSLProgram::use()
 {
 	glUseProgram(_programID);
@@ -97,6 +108,7 @@ void GLSLProgram::unuse()
 
 void GLSLProgram::compileShader(const std::string& filePath, GLuint id)
 {
+	_programID = glCreateProgram();
 	
 	std::ifstream vertexFile(filePath);
 	
@@ -138,5 +150,6 @@ void GLSLProgram::compileShader(const std::string& filePath, GLuint id)
 		
 		return;
 	}
+	
 	
 }

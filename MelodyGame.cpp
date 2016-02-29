@@ -3,7 +3,7 @@
 #include <string>
 #include "Errors.hpp"
 
-MelodyGame::MelodyGame()
+MelodyGame::MelodyGame() : _screenWidth(800), _screenHeight(600), _time(0.0f)
 {
 	
 }
@@ -17,7 +17,14 @@ MelodyGame::~MelodyGame()
 void MelodyGame::run()
 {
 	initSystems();
-	_sprite.init(-0.6f,-0.6f, 0.4f, 0.4f);
+	
+	_sprites.push_back(new Sprite());
+	_sprites.back()->init(-1.0f,-1.0f, 1.0f, 1.0f, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
+	
+	_sprites.push_back(new Sprite());
+	_sprites.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
+	
+	//_playerTexture = ImageLoader::loadPNG("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	gameLoop();
 }
 	
@@ -59,6 +66,8 @@ void MelodyGame::initShaders()
 {
 	_colorProgram.compileShaders("Shaders/vertexShading.vert", "Shaders/fragShading.frag");
 	_colorProgram.addAttribute("vertexPosition");
+	_colorProgram.addAttribute("vertexColor");
+	_colorProgram.addAttribute("vertexUV");	
 	_colorProgram.linkShaders();
 }
 
@@ -67,6 +76,7 @@ void MelodyGame::gameLoop()
 	while(_gameState != GameState::QUIT)
 	{
 		processInput();
+		_time += 0.001;
 		drawGame();
 	}
 }
@@ -94,8 +104,21 @@ void MelodyGame::drawGame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	_colorProgram.use();
+	glActiveTexture(GL_TEXTURE0);
 	
-	_sprite.draw();
+	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
+	glUniform1i(textureLocation, 0);
+	
+	//sGLuint timeLocation = _colorProgram.getUniformLocation("time");
+	
+	//glUniform1f(timeLocation, _time);
+	
+	for(int i = 0; i < _sprites.size(); i++)
+	{
+		_sprites[i]->draw();
+	}
+	//_sprite.draw();
+	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	_colorProgram.unuse();
 	

@@ -5,6 +5,8 @@
 #include <SDL2/SDL.h>
 #undef main
 #include <GL/glew.h>
+#include "GLTexture.hpp"
+#include <vector>
 
 enum class GameState {PLAY, QUIT};
 
@@ -24,9 +26,10 @@ private:
 	void drawGame();
 	
 	SDL_Window* _window = nullptr;
-	int _screenWidth = 800;
-	int _screenHeight = 600;
+	int _screenWidth;
+	int _screenHeight;
+	float _time;
 	GameState _gameState = GameState::PLAY;
-	Sprite _sprite;
+	std::vector <Sprite*> _sprites;
 	GLSLProgram _colorProgram;
 };
