@@ -4,7 +4,7 @@ CFLAGS=-std=c++14 -c $(OPTIMIZE)
 LDFLAGS=-lsdl2 -lglew32 -lopengl32
 all: Sprite.o GLSLProgram.o\
 	Errors.o IOManager.o ImageLoader.o picoPNG.o\
-	ResourceManager.o TextureCache.o
+	ResourceManager.o TextureCache.o Camera2D.o
 	ar rcs libMelody.a $^
 	ranlib libMelody.a
 	mkdir -p ../bin
@@ -32,6 +32,9 @@ ResourceManager.o: ResourceManager.cpp
 	$(CXX) $(CFLAGS) $^
 
 TextureCache.o: TextureCache.cpp
+	$(CXX) $(CFLAGS) $^
+	
+Camera2D.o: Camera2D.cpp
 	$(CXX) $(CFLAGS) $^
 	
 debug: OPTIMIZE=-g

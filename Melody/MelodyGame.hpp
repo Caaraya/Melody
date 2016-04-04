@@ -7,6 +7,7 @@
 #include <GL/glew.h>
 #include "GLTexture.hpp"
 #include <vector>
+#include "Camera2D.hpp"
 
 enum class GameState {PLAY, QUIT};
 
@@ -33,6 +34,7 @@ private:
 	GameState _gameState = GameState::PLAY;
 	std::vector <Sprite*> _sprites;
 	GLSLProgram _colorProgram;
+	Camera2D _camera;
 	float _fps;
 	float _frameTime;
 	float _maxFPS;

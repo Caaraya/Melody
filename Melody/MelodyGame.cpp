@@ -5,7 +5,7 @@
 
 MelodyGame::MelodyGame() : _maxFPS(60.0f), _screenWidth(800), _screenHeight(600), _time(0.0f)
 {
-	
+	_camera.init(_screenWidth, _screenHeight);
 }
 
 
@@ -19,10 +19,10 @@ void MelodyGame::run()
 	initSystems();
 	
 	_sprites.push_back(new Sprite());
-	_sprites.back()->init(-1.0f,-1.0f, 1.0f, 1.0f, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
+	_sprites.back()->init(0.0f, 0.0f, _screenWidth/2, _screenWidth/2, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	
 	_sprites.push_back(new Sprite());
-	_sprites.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
+	_sprites.back()->init(_screenWidth/2, 0.0f, _screenWidth/2, _screenWidth/2, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	
 	//_playerTexture = ImageLoader::loadPNG("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
 	gameLoop();
@@ -81,6 +81,9 @@ void MelodyGame::gameLoop()
 		float startTicks = SDL_GetTicks();
 		processInput();
 		_time += 0.001;
+		
+		_camera.update();
+		
 		drawGame();
 		calculateFPS();
 		
@@ -106,6 +109,10 @@ void MelodyGame::gameLoop()
 void MelodyGame::processInput()
 {
 	SDL_Event evnt;
+	
+	const float CAMERA_SPEED = 20.0f;
+	const float SCALE_SPEED = 0.1f;
+	
 	while(SDL_PollEvent(&evnt))
 	{
 		switch(evnt.type)
@@ -115,6 +122,28 @@ void MelodyGame::processInput()
 				break;
 			case SDL_MOUSEMOTION:
 				// evnt.motion.x, evnt.motion.y
+				break;
+			case SDL_KEYDOWN:
+				switch(evnt.key.keysym.sym) 
+				{
+					case SDLK_w:
+						_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+						break;
+					case SDLK_s:
+						_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+						break;
+					case SDLK_a:
+						_camera.setPosition(_camera.getPosition() + glm::vec2( CAMERA_SPEED, 0.0f));
+						break;
+					case SDLK_d:
+						_camera.setPosition(_camera.getPosition() + glm::vec2( -CAMERA_SPEED, 0.0f));
+						break;
+					case SDLK_q:
+						_camera.setScale(_camera.getScale() + SCALE_SPEED);
+						break;
+					case SDLK_e:
+						_camera.setScale(_camera.getScale() - SCALE_SPEED);
+				}
 				break;
 		}
 	}
@@ -131,9 +160,14 @@ void MelodyGame::drawGame()
 	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
 	glUniform1i(textureLocation, 0);
 	
-	//sGLuint timeLocation = _colorProgram.getUniformLocation("time");
+	//GLuint timeLocation = _colorProgram.getUniformLocation("time");
 	
 	//glUniform1f(timeLocation, _time);
+	
+	GLint pLocation = _colorProgram.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+	
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 	
 	for(int i = 0; i < _sprites.size(); i++)
 	{
