@@ -1,226 +1,180 @@
 #include "MelodyGame.hpp"
+#include <Errors.hpp>
+#include <ResourceManager.hpp>
+
 #include <iostream>
 #include <string>
-#include "Errors.hpp"
 
-MelodyGame::MelodyGame() : _maxFPS(60.0f), _screenWidth(800), _screenHeight(600), _time(0.0f)
+//Constructor, just initializes private member variables
+MelodyGame::MelodyGame() : 
+    _screenWidth(800),
+    _screenHeight(600), 
+    _time(0.0f),
+    _gameState(GameState::PLAY),
+    _maxFPS(60.0f)
 {
-	_camera.init(_screenWidth, _screenHeight);
+    _camera.init(_screenWidth, _screenHeight);
 }
 
-
+//Destructor
 MelodyGame::~MelodyGame()
 {
-	SDL_Quit();
 }
 
-void MelodyGame::run()
-{
-	initSystems();
-	
-	_sprites.push_back(new Sprite());
-	_sprites.back()->init(0.0f, 0.0f, _screenWidth/2, _screenWidth/2, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
-	
-	_sprites.push_back(new Sprite());
-	_sprites.back()->init(_screenWidth/2, 0.0f, _screenWidth/2, _screenWidth/2, "Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
-	
-	//_playerTexture = ImageLoader::loadPNG("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
-	gameLoop();
-}
-	
-void MelodyGame::initSystems()
-{
-	//Initialize everything
-	SDL_Init(SDL_INIT_EVERYTHING);
-	
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	
-	_window = SDL_CreateWindow("Melody Engine", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
-	
-	if(_window == nullptr)
-	{
-		fatalError("SDL Window could not be created");
-	}
-	
-	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
-	
-	if(glContext == nullptr)
-	{
-		fatalError("SDL_GL Context could not be created");
-	}
-	
-	GLenum error = glewInit();
-	
-	if(error != GLEW_OK)
-	{
-		fatalError("Could not initialize Glew");
-	}
-	
-	glClearColor(0.45f,0.6f,1.0f,1.0f);
-	
-	//set vsync
-	SDL_GL_SetSwapInterval(1);
-	
-	initShaders();
+//This runs the game
+void MelodyGame::run() {
+    initSystems();
+
+ 
+    //This only returns when the game ends
+    gameLoop();
 }
 
-void MelodyGame::initShaders()
-{
-	_colorProgram.compileShaders("Shaders/vertexShading.vert", "Shaders/fragShading.frag");
-	_colorProgram.addAttribute("vertexPosition");
-	_colorProgram.addAttribute("vertexColor");
-	_colorProgram.addAttribute("vertexUV");	
-	_colorProgram.linkShaders();
+//Initialize SDL and Opengl and whatever else we need
+void MelodyGame::initSystems() {
+
+    Mengine::init();
+
+    _window.create("Game Engine", _screenWidth, _screenHeight, 0);
+
+    initShaders();
+
+    _spriteBatch.init();
+    _fpsLimiter.init(_maxFPS);
 }
 
-void MelodyGame::gameLoop()
-{
-	while(_gameState != GameState::QUIT)
-	{
-		float startTicks = SDL_GetTicks();
-		processInput();
-		_time += 0.001;
-		
-		_camera.update();
-		
-		drawGame();
-		calculateFPS();
-		
-		//print once every 10 frames
-		static int frameCounter = 0;
-		frameCounter++;
-		
-		if(frameCounter == 10)
-		{
-		std::cout << _fps << std::endl;
-		frameCounter = 0;
-		}
-		
-		float frameTicks = SDL_GetTicks() -startTicks;
-		// limit fps to max
-		if(1000.0f/_maxFPS > frameTicks)
-		{
-			SDL_Delay(1000.0f/_maxFPS - frameTicks);
-		}
-	}
+void MelodyGame::initShaders() {
+    _colorProgram.compileShaders("Shaders/vertexShading.vert", "Shaders/fragShading.frag");
+    _colorProgram.addAttribute("vertexPosition");
+    _colorProgram.addAttribute("vertexColor");
+    _colorProgram.addAttribute("vertexUV");
+    _colorProgram.linkShaders();
 }
 
-void MelodyGame::processInput()
-{
-	SDL_Event evnt;
-	
-	const float CAMERA_SPEED = 20.0f;
-	const float SCALE_SPEED = 0.1f;
-	
-	while(SDL_PollEvent(&evnt))
-	{
-		switch(evnt.type)
-		{
-			case SDL_QUIT:
-				_gameState = GameState::QUIT;
-				break;
-			case SDL_MOUSEMOTION:
-				// evnt.motion.x, evnt.motion.y
-				break;
-			case SDL_KEYDOWN:
-				switch(evnt.key.keysym.sym) 
-				{
-					case SDLK_w:
-						_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
-						break;
-					case SDLK_s:
-						_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
-						break;
-					case SDLK_a:
-						_camera.setPosition(_camera.getPosition() + glm::vec2( CAMERA_SPEED, 0.0f));
-						break;
-					case SDLK_d:
-						_camera.setPosition(_camera.getPosition() + glm::vec2( -CAMERA_SPEED, 0.0f));
-						break;
-					case SDLK_q:
-						_camera.setScale(_camera.getScale() + SCALE_SPEED);
-						break;
-					case SDLK_e:
-						_camera.setScale(_camera.getScale() - SCALE_SPEED);
-				}
-				break;
-		}
-	}
+//This is the main game loop for our program
+void MelodyGame::gameLoop() {
+
+    //Will loop until we set _gameState to EXIT
+    while (_gameState != GameState::EXIT) {
+       
+        _fpsLimiter.begin();
+
+        processInput();
+        _time += 0.1;
+
+        _camera.update();
+
+        drawGame();
+
+        _fps = _fpsLimiter.end();
+
+        //print only once every 10 frames
+        static int frameCounter = 0;
+        frameCounter++;
+        if (frameCounter == 10) {
+            std::cout << _fps << std::endl;
+            frameCounter = 0;
+        }
+    }
 }
 
-void MelodyGame::drawGame()
-{
-	glClearDepth(1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	_colorProgram.use();
-	glActiveTexture(GL_TEXTURE0);
-	
-	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
-	glUniform1i(textureLocation, 0);
-	
-	//GLuint timeLocation = _colorProgram.getUniformLocation("time");
-	
-	//glUniform1f(timeLocation, _time);
-	
-	GLint pLocation = _colorProgram.getUniformLocation("P");
-	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
-	
-	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-	
-	for(int i = 0; i < _sprites.size(); i++)
-	{
-		_sprites[i]->draw();
-	}
-	//_sprite.draw();
-	glBindTexture(GL_TEXTURE_2D, 0);
-	
-	_colorProgram.unuse();
-	
-	SDL_GL_SwapWindow(_window);
+//Processes input with SDL
+void MelodyGame::processInput() {
+    SDL_Event evnt;
+
+    const float CAMERA_SPEED = 2.0f;
+    const float SCALE_SPEED = 0.1f;
+
+    //Will keep looping until there are no more events to process
+    while (SDL_PollEvent(&evnt)) {
+        switch (evnt.type) {
+            case SDL_QUIT:
+                _gameState = GameState::EXIT;
+                break;
+            case SDL_MOUSEMOTION:
+                //std::cout << evnt.motion.x << " " << evnt.motion.y << std::endl;
+                break;
+            case SDL_KEYDOWN:
+                _inputManager.pressKey(evnt.key.keysym.sym);
+                break;
+            case SDL_KEYUP:
+                _inputManager.releaseKey(evnt.key.keysym.sym);
+                break;
+        }
+    }
+
+    if (_inputManager.isKeyPressed(SDLK_w)) {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+    }
+    if (_inputManager.isKeyPressed(SDLK_s)) {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+    }
+    if (_inputManager.isKeyPressed(SDLK_a)) {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+    }
+    if (_inputManager.isKeyPressed(SDLK_d)) {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+    }
+    if (_inputManager.isKeyPressed(SDLK_q)) {
+        _camera.setScale(_camera.getScale() + SCALE_SPEED);
+    }
+    if (_inputManager.isKeyPressed(SDLK_e)) {
+        _camera.setScale(_camera.getScale() - SCALE_SPEED);
+    }
 }
 
-void MelodyGame::calculateFPS()
-{
-	static const int NUM_SAMPLES = 10;
-	static float frameTimes[NUM_SAMPLES];
-	static int currentFrame = 0;
-	
-	static float prevTicks = SDL_GetTicks();
-	float currentTicks; 
-	currentTicks = SDL_GetTicks();
-	
-	_frameTime = currentTicks - prevTicks;
-	frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
-	
-	prevTicks = currentTicks;
-	currentFrame++;
-	
-	int count;
-	if(currentFrame < NUM_SAMPLES)
-	{
-		count = currentFrame;
-	}
-	else
-	{
-		count = NUM_SAMPLES;
-	}
-	
-	float frameTimeAverage = 0;
-	for (int i = 0; i < count; i++)
-	{
-		frameTimeAverage += frameTimes[i];
-	}
-	
-	frameTimeAverage /= count;
-	
-	if (frameTimeAverage > 0)
-	{
-		_fps = 1000.0f / frameTimeAverage;
-	}
-	else
-	{
-		_fps = 60.0f;
-	}
-}
+//Draws the game using the almighty OpenGL
+void MelodyGame::drawGame() {
+
+    //Set the base depth to 1.0
+    glClearDepth(1.0);
+    //Clear the color and depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //Enable the shader
+    _colorProgram.use();
+
+    //We are using texture unit 0
+    glActiveTexture(GL_TEXTURE0);
+    //Get the uniform location
+    GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
+    //Tell the shader that the texture is in texture unit 0
+    glUniform1i(textureLocation, 0);
+
+    //Set the constantly changing time variable
+    //GLint timeLocation = _colorProgram.getUniformLocation("time");
+    //glUniform1f(timeLocation, _time);
+
+    //Set the camera matrix
+    GLint pLocation = _colorProgram.getUniformLocation("P");
+    glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+
+    glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+    _spriteBatch.begin();
+
+    glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
+    glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+    static Mengine::GLTexture texture = Mengine::ResourceManager::getTexture("Textures/jimmyJump_pack/PNG/CharacterRight_Standing.png");
+    Mengine::Color color;
+    color.r = 255;
+    color.g = 255;
+    color.b = 255;
+    color.a = 255;
+
+    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+    _spriteBatch.draw(pos + glm::vec4(50, 0, 0, 0), uv, texture.id, 0.0f, color);
+
+    _spriteBatch.end();
+
+    _spriteBatch.renderBatches();
+
+    //unbind the texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    //disable the shader
+    _colorProgram.unuse();
+
+    //Swap our buffer and draw everything to the screen!
+    _window.swapBuffer();
+}    

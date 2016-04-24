@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
 #include "GLTexture.hpp"
+
+namespace Mengine {
 class TextureCache
 {
 public:
@@ -12,3 +14,4 @@ public:
 private:
 	std::map<std::string, GLTexture> _textureMap;
 };
+}

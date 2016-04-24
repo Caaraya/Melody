@@ -2,6 +2,8 @@
 #include "ImageLoader.hpp"
 #include <iostream>
 
+namespace Mengine {
+
 TextureCache::TextureCache()
 {
 	
@@ -32,4 +34,5 @@ GLTexture TextureCache::getTexture(std::string texturePath)
 	}
 	std::cout << "Loaded Texture \n";
 	return mit->second;
+}
 }
