@@ -3,6 +3,7 @@
 #include "GLTexture.hpp"
 #include <string>
 
+namespace Mengine {
 class Sprite
 {
 	public:
@@ -21,3 +22,4 @@ class Sprite
 		GLuint _vboID;
 		GLTexture _texture;
 };
+}

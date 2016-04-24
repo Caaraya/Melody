@@ -1,41 +1,55 @@
 #pragma once
 
-#include "GLSLProgram.hpp"
-#include "Sprite.hpp"
 #include <SDL2/SDL.h>
-#undef main
 #include <GL/glew.h>
-#include "GLTexture.hpp"
+
+#include <Mengine.hpp>
+#include <GLSLProgram.hpp>
+#include <GLTexture.hpp>
+#include <Sprite.hpp>
+#include <Window.hpp>
+#include <InputManager.hpp>
+#include <Timing.hpp>
+
+#include <SpriteBatch.hpp>
+
+#include <Camera2D.hpp>
+
 #include <vector>
-#include "Camera2D.hpp"
 
-enum class GameState {PLAY, QUIT};
+enum class GameState {PLAY, EXIT};
 
+//Our example game class, just for testing purposes right now
 class MelodyGame
 {
 public:
-	MelodyGame();
-	~MelodyGame();
-	
-	void run();
-	
+    MelodyGame();
+    ~MelodyGame();
+
+    void run();
+
 private:
-	void initSystems();
-	void initShaders();
-	void gameLoop();
-	void processInput();
-	void drawGame();
-	void calculateFPS();
-	
-	SDL_Window* _window = nullptr;
-	int _screenWidth;
-	int _screenHeight;
-	float _time;
-	GameState _gameState = GameState::PLAY;
-	std::vector <Sprite*> _sprites;
-	GLSLProgram _colorProgram;
-	Camera2D _camera;
-	float _fps;
-	float _frameTime;
-	float _maxFPS;
+    void initSystems();
+    void initShaders();
+    void gameLoop();
+    void processInput();
+    void drawGame();
+
+    Mengine::Window _window;
+    int _screenWidth;
+    int _screenHeight;
+    GameState _gameState;
+
+    Mengine::GLSLProgram _colorProgram;
+    Mengine::Camera2D _camera;
+
+    Mengine::SpriteBatch _spriteBatch;
+
+    Mengine::InputManager _inputManager;
+    Mengine::FpsLimiter _fpsLimiter;
+    
+    float _maxFPS;
+    float _fps;
+    float _time;
 };
+

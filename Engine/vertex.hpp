@@ -1,6 +1,8 @@
 #pragma once
 #include <GL/glew.h>
 
+
+namespace Mengine {
 struct Position
 {
 	float x;
@@ -52,3 +54,4 @@ struct Vertex
 		position.y = y;
 	}
 };
+}

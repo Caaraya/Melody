@@ -1,8 +1,11 @@
 #include "ResourceManager.hpp"
 
-TextureCache ResourceManager::_textureCache;
+namespace Mengine {
 
-GLTexture ResourceManager::getTexture(std::string texturePath)
-{
-	return _textureCache.getTexture(texturePath);
+	TextureCache ResourceManager::_textureCache;
+
+	GLTexture ResourceManager::getTexture(std::string texturePath)
+	{
+		return _textureCache.getTexture(texturePath);
+	}
 }

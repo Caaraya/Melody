@@ -2,9 +2,10 @@ OPTIMIZE=-O2
 CXX=g++
 CFLAGS=-std=c++14 -c $(OPTIMIZE)
 LDFLAGS=-lsdl2 -lglew32 -lopengl32
-all: Sprite.o GLSLProgram.o\
+all: Sprite.o GLSLProgram.o InputManager.o\
 	Errors.o IOManager.o ImageLoader.o picoPNG.o\
-	ResourceManager.o TextureCache.o Camera2D.o
+	ResourceManager.o TextureCache.o Camera2D.o \
+	Mengine.o SpriteBatch.o Timing.o Window.o
 	ar rcs libMelody.a $^
 	ranlib libMelody.a
 	mkdir -p ../bin
@@ -35,6 +36,21 @@ TextureCache.o: TextureCache.cpp
 	$(CXX) $(CFLAGS) $^
 	
 Camera2D.o: Camera2D.cpp
+	$(CXX) $(CFLAGS) $^
+
+Mengine.o: Mengine.cpp
+	$(CXX) $(CFLAGS) $^
+
+SpriteBatch.o: SpriteBatch.cpp
+	$(CXX) $(CFLAGS) $^
+
+Timing.o: Timing.cpp
+	$(CXX) $(CFLAGS) $^
+
+Window.o: Window.cpp
+	$(CXX) $(CFLAGS) $^
+	
+InputManager.o: InputManager.cpp
 	$(CXX) $(CFLAGS) $^
 	
 debug: OPTIMIZE=-g
