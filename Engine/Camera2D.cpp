@@ -37,4 +37,19 @@ namespace Mengine {
 			_needsMatrixChange = false;
 		}
 	}
+	
+	glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screenCoords)
+	{
+		
+		// make 0 the center
+		screenCoords -= glm::vec2(_screenWidth/2, _screenHeight/2);
+		
+		// apply scaling factor
+		screenCoords /= _scale;
+		
+		// tranlate based on camera position
+		screenCoords += _position;
+		
+		return screenCoords;
+	}
 }
