@@ -71,7 +71,7 @@ void MelodyGame::gameLoop() {
         //print only once every 10 frames
         static int frameCounter = 0;
         frameCounter++;
-        if (frameCounter == 10) {
+        if (frameCounter == 100000) {
             std::cout << _fps << std::endl;
             frameCounter = 0;
         }
@@ -91,14 +91,20 @@ void MelodyGame::processInput() {
             case SDL_QUIT:
                 _gameState = GameState::EXIT;
                 break;
-            case SDL_MOUSEMOTION:
-                //std::cout << evnt.motion.x << " " << evnt.motion.y << std::endl;
-                break;
             case SDL_KEYDOWN:
                 _inputManager.pressKey(evnt.key.keysym.sym);
                 break;
             case SDL_KEYUP:
                 _inputManager.releaseKey(evnt.key.keysym.sym);
+                break;
+			case SDL_MOUSEBUTTONDOWN:
+				_inputManager.pressKey(evnt.button.button);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				_inputManager.releaseKey(evnt.button.button);
+				break;
+			case SDL_MOUSEMOTION:
+                _inputManager.setMouseCoords(evnt.motion.x, evnt.motion.y);
                 break;
         }
     }
@@ -121,6 +127,12 @@ void MelodyGame::processInput() {
     if (_inputManager.isKeyPressed(SDLK_e)) {
         _camera.setScale(_camera.getScale() - SCALE_SPEED);
     }
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
+	}
 }
 
 //Draws the game using the almighty OpenGL
@@ -163,7 +175,6 @@ void MelodyGame::drawGame() {
     color.a = 255;
 
     _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-    _spriteBatch.draw(pos + glm::vec4(50, 0, 0, 0), uv, texture.id, 0.0f, color);
 
     _spriteBatch.end();
 
