@@ -40,7 +40,8 @@ namespace Mengine {
 	
 	glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screenCoords)
 	{
-		
+		// invert y coordinates
+		screenCoords.y = _screenHeight - screenCoords.y;
 		// make 0 the center
 		screenCoords -= glm::vec2(_screenWidth/2, _screenHeight/2);
 		

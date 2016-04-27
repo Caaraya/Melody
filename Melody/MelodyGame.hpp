@@ -12,7 +12,7 @@
 #include <Timing.hpp>
 
 #include <SpriteBatch.hpp>
-
+#include "Bullet.hpp"
 #include <Camera2D.hpp>
 
 #include <vector>
@@ -47,6 +47,8 @@ private:
 
     Mengine::InputManager _inputManager;
     Mengine::FpsLimiter _fpsLimiter;
+	
+	std::vector<Bullet> _bullets;
     
     float _maxFPS;
     float _fps;
