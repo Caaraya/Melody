@@ -89,7 +89,7 @@ bool Agent::collideWithAgent(Agent* agent) {
 
 void Agent::draw(Mengine::SpriteBatch& _spriteBatch) {
 
-    static int textureID = Mengine::ResourceManager::getTexture("Textures/circle.png").id;
+    static int textureID = Mengine::ResourceManager::getTexture("ZombieGame/Textures/circle.png").id;
 
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 

@@ -38,7 +38,7 @@ void Bullet::draw(Mengine::SpriteBatch& spriteBatch) {
     color.b = 75;
     color.a = 255;
 
-    spriteBatch.draw(destRect, uvRect, Mengine::ResourceManager::getTexture("Textures/circle.png").id, 0.0f, color);
+    spriteBatch.draw(destRect, uvRect, Mengine::ResourceManager::getTexture("ZombieGame/Textures/circle.png").id, 0.0f, color);
 }
 
 bool Bullet::collideWithAgent(Agent* agent) {

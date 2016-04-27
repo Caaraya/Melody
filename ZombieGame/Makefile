@@ -3,7 +3,7 @@ CXX=g++
 CFLAGS=-std=c++14 -c $(OPTIMIZE) -I../Engine
 LDFLAGS=-L../bin -lMelody -lsdl2 -lglew32 -lopengl32
 all: MainGame.o Bullet.o Zombie.o Player.o main.o Human.o\
- Gun.o Agent.o
+ Gun.o Agent.o Level.o
 	g++ $^ $(LDFLAGS) -o zombiegame.exe
 	mkdir -p ../bin
 	cp ./zombiegame.exe ../bin
@@ -32,7 +32,7 @@ Human.o: Human.cpp
 Gun.o: Gun.cpp
 	$(CXX) $(CFLAGS) $^
 
-Agent.cpp: Agent.o
+Agent.o: Agent.cpp
 	$(CXX) $(CFLAGS) $^
 	
 debug: OPTIMIZE=-g

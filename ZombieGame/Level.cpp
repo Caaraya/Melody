@@ -53,21 +53,21 @@ Level::Level(const std::string& fileName) {
                 case 'R':
                     _spriteBatch.draw(destRect,
                                       uvRect,
-                                      Mengine::ResourceManager::getTexture("Textures/red_bricks.png").id,
+                                      Mengine::ResourceManager::getTexture("ZombieGame/Textures/red_bricks.png").id,
                                       0.0f,
                                       whiteColor);      
                     break;
                 case 'G':
                     _spriteBatch.draw(destRect,
                                       uvRect,
-                                      Mengine::ResourceManager::getTexture("Textures/glass.png").id,
+                                      Mengine::ResourceManager::getTexture("ZombieGame/Textures/glass.png").id,
                                       0.0f,
                                       whiteColor);
                     break;
                 case 'L':
                     _spriteBatch.draw(destRect,
                                       uvRect,
-                                      Mengine::ResourceManager::getTexture("Textures/light_bricks.png").id,
+                                      Mengine::ResourceManager::getTexture("ZombieGame/Textures/light_bricks.png").id,
                                       0.0f,
                                       whiteColor);
                     break;
@@ -100,5 +100,5 @@ Level::~Level()
 
 
 void Level::draw() {
-    _spriteBatch.renderBatch();
+    _spriteBatch.renderBatches();
 }
