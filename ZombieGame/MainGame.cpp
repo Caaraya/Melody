@@ -6,6 +6,7 @@
 #include <random>
 #include <ctime>
 
+#undef main
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -17,8 +18,8 @@ const float ZOMBIE_SPEED = 1.3f;
 const float PLAYER_SPEED = 5.0f;
 
 MainGame::MainGame()  :
-    _screenWidth(1024),
-    _screenHeight(768),
+    _screenWidth(800),
+    _screenHeight(600),
     _gameState(GameState::PLAY),
     _fps(0),
     _player(nullptr),
@@ -73,7 +74,7 @@ void MainGame::initSystems() {
 
 void MainGame::initLevel() {
     // Level 1
-    _levels.push_back(new Level("Levels/level1.txt"));
+    _levels.push_back(new Level("ZombieGame/Levels/level1.txt"));
     _currentLevel = 0;
 
     _player = new Player();
@@ -110,7 +111,7 @@ void MainGame::initLevel() {
 
 void MainGame::initShaders() {
     // Compile our color shader
-    _textureProgram.compileShaders("Shaders/textureShading.vert", "Shaders/textureShading.frag");
+    _textureProgram.compileShaders("ZombieGame/Shaders/textureShading.vert", "ZombieGame/Shaders/textureShading.frag");
     _textureProgram.addAttribute("vertexPosition");
     _textureProgram.addAttribute("vertexColor");
     _textureProgram.addAttribute("vertexUV");
@@ -120,7 +121,7 @@ void MainGame::initShaders() {
 void MainGame::gameLoop() {
     
     Mengine::FpsLimiter fpsLimiter;
-    fpsLimiter.setMaxFPS(6000000.0f);
+    fpsLimiter.setMaxFPS(60.0f);
 	
 	const float CAMERA_SCALE = 1.0f / 4.0f;
 	_camera.setScale(CAMERA_SCALE);	
