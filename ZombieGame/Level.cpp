@@ -1,9 +1,9 @@
 #include "Level.h"
 
-#include <Bengine/Errors.h>
+#include <Errors.hpp>
 #include <fstream>
 #include <iostream>
-#include <Bengine/ResourceManager.h>
+#include <ResourceManager.hpp>
 
 Level::Level(const std::string& fileName) {
 
@@ -12,7 +12,7 @@ Level::Level(const std::string& fileName) {
 
     // Error checking
     if (file.fail()) {
-        Bengine::fatalError("Failed to open " + fileName);
+        Mengine::fatalError("Failed to open " + fileName);
     }
 
     // Throw away the first string in tmp
@@ -32,7 +32,7 @@ Level::Level(const std::string& fileName) {
 
     glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
-    Bengine::Color whiteColor;
+    Mengine::Color whiteColor;
     whiteColor.r = 255;
     whiteColor.g = 255;
     whiteColor.b = 255;
@@ -53,21 +53,21 @@ Level::Level(const std::string& fileName) {
                 case 'R':
                     _spriteBatch.draw(destRect,
                                       uvRect,
-                                      Bengine::ResourceManager::getTexture("Textures/red_bricks.png").id,
+                                      Mengine::ResourceManager::getTexture("Textures/red_bricks.png").id,
                                       0.0f,
                                       whiteColor);      
                     break;
                 case 'G':
                     _spriteBatch.draw(destRect,
                                       uvRect,
-                                      Bengine::ResourceManager::getTexture("Textures/glass.png").id,
+                                      Mengine::ResourceManager::getTexture("Textures/glass.png").id,
                                       0.0f,
                                       whiteColor);
                     break;
                 case 'L':
                     _spriteBatch.draw(destRect,
                                       uvRect,
-                                      Bengine::ResourceManager::getTexture("Textures/light_bricks.png").id,
+                                      Mengine::ResourceManager::getTexture("Textures/light_bricks.png").id,
                                       0.0f,
                                       whiteColor);
                     break;

@@ -1,5 +1,5 @@
 #include "Player.h"
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #include "Gun.h"
 
@@ -12,7 +12,7 @@ Player::~Player() {
     // Empty
 }
 
-void Player::init(float speed, glm::vec2 pos, Bengine::InputManager* inputManager, Bengine::Camera2D* camera, std::vector<Bullet>* bullets) {
+void Player::init(float speed, glm::vec2 pos, Mengine::InputManager* inputManager, Mengine::Camera2D* camera, std::vector<Bullet>* bullets) {
     _speed = speed;
     _position = pos;
     _inputManager = inputManager;

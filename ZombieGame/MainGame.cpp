@@ -1,12 +1,12 @@
 #include "MainGame.h"
 
-#include <Bengine/Bengine.h>
-#include <Bengine/Timing.h>
-#include <Bengine/Errors.h>
+#include <Mengine.hpp>
+#include <Timing.hpp>
+#include <Errors.hpp>
 #include <random>
 #include <ctime>
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 
 #include "Gun.h"
@@ -52,7 +52,7 @@ void MainGame::run() {
 
 void MainGame::initSystems() {
     // Initialize the game engine
-    Bengine::init();
+    Mengine::init();
 
     // Create our window
     _window.create("ZombieGame", _screenWidth, _screenHeight, 0);
@@ -119,7 +119,7 @@ void MainGame::initShaders() {
 
 void MainGame::gameLoop() {
     
-    Bengine::FpsLimiter fpsLimiter;
+    Mengine::FpsLimiter fpsLimiter;
     fpsLimiter.setMaxFPS(6000000.0f);
 	
 	const float CAMERA_SCALE = 1.0f / 4.0f;
@@ -182,7 +182,7 @@ void MainGame::updateAgents() {
 
         // Collide with player
         if (_zombies[i]->collideWithAgent(_player)) {
-            Bengine::fatalError("YOU LOSE");
+            Mengine::fatalError("YOU LOSE");
         }
     }
 
@@ -281,7 +281,7 @@ void MainGame::checkVictory() {
                     _numHumansKilled, _numZombiesKilled, _humans.size() - 1, _levels[_currentLevel]->getNumHumans());
 
         // Easy way to end the game :P
-        Bengine::fatalError("");
+        Mengine::fatalError("");
     }
 }
 
@@ -357,7 +357,7 @@ void MainGame::drawGame() {
     _agentSpriteBatch.end();
 
     // Render to the screen
-    _agentSpriteBatch.renderBatch();
+    _agentSpriteBatch.renderBatches();
 
     // Unbind the program
     _textureProgram.unuse();

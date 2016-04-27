@@ -1,5 +1,5 @@
 #include "Bullet.h"
-#include <Bengine/ResourceManager.h>
+#include <ResourceManager.hpp>
 
 #include "Agent.h"
 #include "Human.h"
@@ -25,20 +25,20 @@ bool Bullet::update(const std::vector<std::string>& levelData) {
     return collideWithWorld(levelData);
 }
 
-void Bullet::draw(Bengine::SpriteBatch& spriteBatch) {
+void Bullet::draw(Mengine::SpriteBatch& spriteBatch) {
     glm::vec4 destRect(_position.x + BULLET_RADIUS,
                        _position.y + BULLET_RADIUS,
                        BULLET_RADIUS * 2,
                        BULLET_RADIUS * 2);
     const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
-    Bengine::Color color;
+    Mengine::Color color;
     color.r = 75;
     color.g = 75;
     color.b = 75;
     color.a = 255;
 
-    spriteBatch.draw(destRect, uvRect, Bengine::ResourceManager::getTexture("Textures/circle.png").id, 0.0f, color);
+    spriteBatch.draw(destRect, uvRect, Mengine::ResourceManager::getTexture("Textures/circle.png").id, 0.0f, color);
 }
 
 bool Bullet::collideWithAgent(Agent* agent) {

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <Bengine/SpriteBatch.h>
+#include <SpriteBatch.hpp>
 
 const int TILE_WIDTH = 64;
 
@@ -27,7 +27,7 @@ public:
 private:
     std::vector<std::string> _levelData;
     int _numHumans;
-    Bengine::SpriteBatch _spriteBatch;
+    Mengine::SpriteBatch _spriteBatch;
 
     glm::vec2 _startPlayerPos;
     std::vector<glm::vec2> _zombieStartPositions;

@@ -2,7 +2,8 @@
 
 #include <glm/glm.hpp>
 #include <vector>
-#include <Bengine/SpriteBatch.h>
+#include <SpriteBatch.hpp>
+#include <string>
 
 class Human;
 class Zombie;
@@ -19,7 +20,7 @@ public:
     // When update returns true, delete bullet
     bool update(const std::vector<std::string>& levelData);
 
-    void draw(Bengine::SpriteBatch& spriteBatch);
+    void draw(Mengine::SpriteBatch& spriteBatch);
 
     bool collideWithAgent(Agent* agent);
 

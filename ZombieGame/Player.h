@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Human.h"
-#include <Bengine/InputManager.h>
-#include <Bengine/Camera2D.h>
+#include <InputManager.hpp>
+#include <Camera2D.hpp>
 #include "Bullet.h"
 
 class Gun;
@@ -13,7 +13,7 @@ public:
     Player();
     ~Player();
 
-    void init(float speed, glm::vec2 pos, Bengine::InputManager* inputManager, Bengine::Camera2D* camera, std::vector<Bullet>* bullets);
+    void init(float speed, glm::vec2 pos, Mengine::InputManager* inputManager, Mengine::Camera2D* camera, std::vector<Bullet>* bullets);
 
     void addGun(Gun* gun);
 
@@ -21,12 +21,12 @@ public:
                 std::vector<Human*>& humans,
                 std::vector<Zombie*>& zombies) override;
 private:
-    Bengine::InputManager* _inputManager;
+    Mengine::InputManager* _inputManager;
 
     std::vector<Gun*> _guns;
     int _currentGunIndex;
 
-    Bengine::Camera2D* _camera;
+    Mengine::Camera2D* _camera;
     std::vector<Bullet>* _bullets;
 
 };
