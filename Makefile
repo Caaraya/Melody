@@ -4,13 +4,13 @@ CFLAGS=-std=c++14 -c $(OPTIMIZE)
 LDFLAGS=-lsdl2 -lglew32 -lopengl32
 all: 
 	make -C Engine
-	make -C Melody
+	make -C ZombieGame
 
 debug:
 	make -C Engine debug
-	make -C Melody debug
+	make -C ZombieGame debug
 	
 clean:
 	make -C Engine clean
-	make -C Melody clean
+	make -C ZombieGame clean
 	rm -rf ./bin

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Bengine/Window.h>
-#include <Bengine/GLSLProgram.h>
-#include <Bengine/Camera2D.h>
-#include <Bengine/InputManager.h>
-#include <Bengine/SpriteBatch.h>
+#include <Window.hpp>
+#include <GLSLProgram.hpp>
+#include <Camera2D.hpp>
+#include <InputManager.hpp>
+#include <SpriteBatch.hpp>
 
 #include "Player.h"
 #include "Level.h"
@@ -55,15 +55,15 @@ private:
     void drawGame();
 
     /// Member Variables
-    Bengine::Window _window; ///< The game window
+    Mengine::Window _window; ///< The game window
     
-    Bengine::GLSLProgram _textureProgram; ///< The shader program
+    Mengine::GLSLProgram _textureProgram; ///< The shader program
 
-    Bengine::InputManager _inputManager; ///< Handles input
+    Mengine::InputManager _inputManager; ///< Handles input
 
-    Bengine::Camera2D _camera; ///< Main Camera
+    Mengine::Camera2D _camera; ///< Main Camera
 
-    Bengine::SpriteBatch _agentSpriteBatch; ///< Draws all agents
+    Mengine::SpriteBatch _agentSpriteBatch; ///< Draws all agents
 
     std::vector<Level*> _levels; ///< vector of all levels
 

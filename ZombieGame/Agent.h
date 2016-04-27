@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <Bengine/SpriteBatch.h>
+#include <SpriteBatch.hpp>
+#include <string>
 
 const float AGENT_WIDTH = 60.0f;
 const float AGENT_RADIUS = AGENT_WIDTH / 2.0f;
@@ -23,7 +24,7 @@ public:
 
     bool collideWithAgent(Agent* agent);
 
-    void draw(Bengine::SpriteBatch& _spriteBatch);
+    void draw(Mengine::SpriteBatch& _spriteBatch);
     
     // Return true if we died
     bool applyDamage(float damage);
@@ -40,7 +41,7 @@ protected:
     void collideWithTile(glm::vec2 tilePos);
     
     glm::vec2 _position;
-    Bengine::Color _color;
+    Mengine::Color _color;
     float _speed;
     float _health;
 };
