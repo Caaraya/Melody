@@ -95,7 +95,7 @@ void SpriteBatch::createRenderBatches()
 	{
 		if(_glyphs[cg]->texture != _glyphs[cg - 1]->texture)
 		{
-			_renderBatches.emplace_back(offset, (GLuint)6U, _glyphs[cv]->texture);
+			_renderBatches.emplace_back(offset, (GLuint)6U, _glyphs[cg]->texture);
 		} else {
 			_renderBatches.back().numVertices += 6;
 		}
