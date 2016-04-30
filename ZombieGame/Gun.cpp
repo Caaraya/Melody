@@ -39,7 +39,7 @@ void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vecto
     for (int i = 0; i < _bulletsPerShot; i++) {
         // Add a new bullet
         bullets.emplace_back(position, 
-                             glm::rotate(direction, randRotate(randomEngine)),
+                             glm::rotate(direction, glm::radians(randRotate(randomEngine))),
                              _bulletDamage, 
                              _bulletSpeed);
     }   
