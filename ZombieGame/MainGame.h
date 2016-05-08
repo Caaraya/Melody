@@ -40,10 +40,10 @@ private:
     void gameLoop();
 
     /// Updates all agents
-    void updateAgents();
+    void updateAgents(float deltaTime);
 
     /// Updates all bullets
-    void updateBullets();
+    void updateBullets(float deltaTime);
 
     /// Checks the victory condition
     void checkVictory();
