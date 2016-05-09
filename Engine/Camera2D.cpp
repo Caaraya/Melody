@@ -53,4 +53,32 @@ namespace Mengine {
 		
 		return screenCoords;
 	}
+	
+	// simple test to see if a box is in the camera view
+	bool Camera2D::isBoxVisible(const glm::vec2& position, const glm::vec2 dimentions)
+	{
+		
+		glm::vec2 scaledScreenDimentions = glm::vec2(_screenWidth, _screenHeight) / _scale;
+		// The minimum distance before a collision occurs
+		const float MIN_DISTANCE_X = dimentions.x / 2.0f + scaledScreenDimentions.x / 2.0f;
+		const float MIN_DISTANCE_Y = dimentions.y / 2.0f + scaledScreenDimentions.y / 2.0f;
+
+		// Center position of the agent
+		glm::vec2 centerPos = position + dimentions / 2.0f;
+		// center position of the camera
+		glm::vec2 centerCameraPos = _position;
+		// Vector from the input to the camera
+		glm::vec2 distVec = centerPos - centerCameraPos;
+
+		// Get the depth of the collision
+		float xDepth = MIN_DISTANCE_X - abs(distVec.x);
+		float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+
+		// If either the depths are > 0, then we collided
+		if (xDepth > 0 && yDepth > 0) {
+		// collision
+            return true;
+        }
+		return false;
+	}
 }

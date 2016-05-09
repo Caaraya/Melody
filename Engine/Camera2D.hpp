@@ -16,6 +16,8 @@ namespace Mengine {
 		
 		glm::vec2 convertScreenToWorld(glm::vec2 screenCoords);
 		
+		bool isBoxVisible(const glm::vec2& position, const glm::vec2 dimentions);
+		
 		//setters
 		void setPosition(const glm::vec2& newPosition) { _position = newPosition; _needsMatrixChange = true; }
 		void setScale(float newScale) { _scale = newScale; _needsMatrixChange = true;}
