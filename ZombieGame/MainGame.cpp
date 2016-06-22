@@ -25,8 +25,10 @@ MainGame::MainGame()  :
     _fps(0),
     _player(nullptr),
     _numHumansKilled(0),
-    _numZombiesKilled(0) {
+    _numZombiesKilled(0)//,
+    //_spriteFont("ZombieGame/Fonts/Slabo27px-Regular.ttf", 11) {
     // Empty
+{
 }
 
 MainGame::~MainGame() {
@@ -67,6 +69,7 @@ void MainGame::initSystems() {
 
     // Initialize our spritebatch
     _agentSpriteBatch.init();
+    _spriteFont = new Mengine::SpriteFont("ZombieGame/Fonts/Slabo27px-Regular.ttf", 27);
 
     // Set up the camera
     _camera.init(_screenWidth, _screenHeight);
@@ -387,7 +390,9 @@ void MainGame::drawGame() {
     for (int i = 0; i < _bullets.size(); i++) {
         _bullets[i].draw(_agentSpriteBatch);
     }
-
+    using Mengine::ColorRGBA8;
+    _spriteFont->draw(_agentSpriteBatch, "Hello", _player->getPosition(), glm::vec2(5, 5), 1.0, 
+        ColorRGBA8(0,0,0,255));
     // End spritebatch creation
     _agentSpriteBatch.end();
 

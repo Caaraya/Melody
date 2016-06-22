@@ -1,8 +1,8 @@
-#include "SpriteFont.h"
+#include "SpriteFont.hpp"
 
-#include "SpriteBatch.h"
+#include "SpriteBatch.hpp"
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 int closestPow2(int i) {
     i--;
@@ -16,12 +16,15 @@ int closestPow2(int i) {
 
 #define MAX_TEXTURE_RES 4096
 
-namespace Bengine {
+namespace Mengine {
 
     SpriteFont::SpriteFont(const char* font, int size, char cs, char ce) {
         // Initialize SDL_ttf
         if (!TTF_WasInit()) {
-            TTF_Init();
+            if(TTF_Init() == -1) {
+                printf("Failed to initialize SDL2 TTF");
+                throw;
+            }
         }
         TTF_Font* f = TTF_OpenFont(font, size);
         if (f == nullptr) {
