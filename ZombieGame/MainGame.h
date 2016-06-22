@@ -5,6 +5,7 @@
 #include <Camera2D.hpp>
 #include <InputManager.hpp>
 #include <SpriteBatch.hpp>
+#include <SpriteFont.hpp>
 
 #include "Player.h"
 #include "Level.h"
@@ -64,6 +65,8 @@ private:
     Mengine::Camera2D _camera; ///< Main Camera
 
     Mengine::SpriteBatch _agentSpriteBatch; ///< Draws all agents
+
+    Mengine::SpriteFont* _spriteFont;
 
     std::vector<Level*> _levels; ///< vector of all levels
 

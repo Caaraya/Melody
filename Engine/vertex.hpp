@@ -18,7 +18,6 @@ struct ColorRGBA8
 	GLubyte g;
 	GLubyte b;
 	GLubyte a;
-	
 };
 
 struct UV 

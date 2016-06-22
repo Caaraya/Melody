@@ -24,14 +24,14 @@
 #ifndef SpriteFont_h__
 #define SpriteFont_h__
 
-#include <TTF/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 #include <glm/glm.hpp>
 #include <map>
 #include <vector>
 
-#include "Vertex.h"
+#include "vertex.hpp"
 
-namespace Bengine {
+namespace Mengine {
 
     class GLTexture;
     class SpriteBatch;

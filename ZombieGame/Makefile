@@ -1,12 +1,16 @@
 OPTIMIZE=-O2
 CXX=g++
 CFLAGS=-std=c++14 -c $(OPTIMIZE) -I../Engine
-LDFLAGS=-L../bin -lMelody -lsdl2 -lglew32 -lopengl32
+LDFLAGS=-L../bin -lMelody -lSDL2_ttf -lSDL2 -lGLEW -lGL
 all: MainGame.o Bullet.o Zombie.o Player.o main.o Human.o\
  Gun.o Agent.o Level.o
 	g++ $^ $(LDFLAGS) -o zombiegame.exe
 	mkdir -p ../bin
 	cp ./zombiegame.exe ../bin
+	cp -r Fonts ../bin
+	cp -r Shaders ../bin
+	cp -r Textures ../bin
+	cp -r Levels ../bin
 	
 MainGame.o: MainGame.cpp
 	$(CXX) $(CFLAGS) $^
