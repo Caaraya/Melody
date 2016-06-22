@@ -2,7 +2,7 @@ OPTIMIZE=-O2
 CXX=g++
 CFLAGS=-std=c++14 -c $(OPTIMIZE)
 LDFLAGS=-lsdl2 -lglew32 -lopengl32
-all: Sprite.o GLSLProgram.o InputManager.o\
+all: Sprite.o GLSLProgram.o InputManager.o SpriteFont.o\
 	Errors.o IOManager.o ImageLoader.o picoPNG.o\
 	ResourceManager.o TextureCache.o Camera2D.o \
 	Mengine.o SpriteBatch.o Timing.o Window.o
@@ -51,6 +51,9 @@ Window.o: Window.cpp
 	$(CXX) $(CFLAGS) $^
 	
 InputManager.o: InputManager.cpp
+	$(CXX) $(CFLAGS) $^
+	
+SpriteFont.o: SpriteFont.cpp
 	$(CXX) $(CFLAGS) $^
 	
 debug: OPTIMIZE=-g
