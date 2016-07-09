@@ -309,7 +309,7 @@ void MainGame::checkVictory() {
     // If all zombies are dead we win!
     if (_zombies.empty()) {
         // Print victory message
-        std::printf("*** You win! ***\n You killed %d humans and %d zombies. There are %d/%d civilians remaining",
+        std::printf("*** You win! ***\n You killed %d humans and %d zombies. There are %lu/%d civilians remaining",
                     _numHumansKilled, _numZombiesKilled, _humans.size() - 1, _levels[_currentLevel]->getNumHumans());
 
         // Easy way to end the game :P
