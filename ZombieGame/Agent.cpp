@@ -146,8 +146,8 @@ void Agent::collideWithTile(glm::vec2 tilePos) {
     glm::vec2 distVec = centerAgentPos - tilePos;
 
     // Get the depth of the collision
-    float xDepth = MIN_DISTANCE - abs(distVec.x);
-    float yDepth = MIN_DISTANCE - abs(distVec.y);
+    float xDepth = MIN_DISTANCE - std::abs(distVec.x);
+    float yDepth = MIN_DISTANCE - std::abs(distVec.y);
 
     // If either the depths are > 0, then we collided
     if (xDepth > 0 && yDepth > 0) {
